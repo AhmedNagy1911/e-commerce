@@ -8,6 +8,7 @@ public class ProductRepository(StoreContext context) : IProductRepository
 {
     private readonly StoreContext _context = context;
 
+
     public void AddProduct(Product product)
     {
         _context.Products.Add(product);
