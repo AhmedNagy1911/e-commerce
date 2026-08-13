@@ -14,9 +14,6 @@ public class ProductRepository(StoreContext context) : IProductRepository
         _context.Products.Add(product);
     }
 
-
-
-
     public void DeleteProduct(Product product)
     {
        _context.Products.Remove(product);

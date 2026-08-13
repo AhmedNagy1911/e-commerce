@@ -11,7 +11,6 @@ public class ProductsController(IProductRepository repo) : ControllerBase
 {
     private readonly IProductRepository _repo = repo;
 
-
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts()
     {
