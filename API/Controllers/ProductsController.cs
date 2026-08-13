@@ -32,6 +32,7 @@ public class ProductsController(IProductRepository repo) : ControllerBase
     public async Task<ActionResult<Product>> CreateProduct(Product product)
     {
         _repo.AddProduct(product);
+
         if(await _repo.SaveChangesAsync())
          CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
 
