@@ -1,42 +1,45 @@
 ﻿using Core.Entites;
 using Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
 
-public class ProductRepository : IProductRepository
+public class ProductRepository(StoreContext context) : IProductRepository
 {
+    private readonly StoreContext _context = context;
+
     public void AddProduct(Product product)
     {
-        throw new NotImplementedException();
+        _context.Products.Add(product);
     }
 
     public void DeleteProduct(Product product)
     {
-        throw new NotImplementedException();
+       _context.Products.Remove(product);
     }
 
-    public Task<Product?> GetProductByIdAsync(int id)
+    public async Task<Product?> GetProductByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _context.Products.FindAsync(id);
     }
 
-    public Task<IReadOnlyList<Product>> GetProductsAsync()
+    public async Task<IReadOnlyList<Product>> GetProductsAsync()
     {
-        throw new NotImplementedException();
+       return await _context.Products.ToListAsync();
     }
 
     public bool ProductExists(int id)
     {
-        throw new NotImplementedException();
+       return _context.Products.Any(p => p.Id == id);
     }
 
-    public Task<bool> SaveChangesAsync()
+    public async Task<bool> SaveChangesAsync()
     {
-        throw new NotImplementedException();
+        return await _context.SaveChangesAsync() > 0;
     }
 
     public void UpdateProduct(Product product)
     {
-        throw new NotImplementedException();
+       _context.Entry(product).State = EntityState.Modified;
     }
 }
