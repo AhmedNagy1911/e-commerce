@@ -8,5 +8,5 @@ public class Product : BaseEntity
     public required string PictureUrl { get; set; }
     public required string Type { get; set; }
     public required string Brand { get; set; } //ماركة
-    public required string QuantityInStock { get; set; }  //الكمية المتوفرة في المخزن
+    public int  QuantityInStock { get; set; }  //الكمية المتوفرة في المخزن
 }
