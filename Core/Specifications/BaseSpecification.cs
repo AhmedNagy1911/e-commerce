@@ -3,7 +3,9 @@ using System.Linq.Expressions;
 
 namespace Core.Specifications;
 
-public class BaseSpecification<T>(Expression<Func<T, bool>> criteria) : ISpecification<T>
+public class BaseSpecification<T>(Expression<Func<T, bool>>? criteria) : ISpecification<T>
 {
-    public Expression<Func<T, bool>> Criteria => criteria;
+    public BaseSpecification() : this(null) { }
+
+    public Expression<Func<T, bool>>? Criteria => criteria;
 }
