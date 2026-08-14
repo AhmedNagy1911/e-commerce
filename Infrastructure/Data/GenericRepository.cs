@@ -1,5 +1,6 @@
 ﻿using Core.Entites;
 using Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
 
@@ -9,36 +10,37 @@ public class GenericRepository<T>(StoreContext context) : IGenericRepository<T> 
 
     public void Add(T entity)
     {
-        throw new NotImplementedException();
+       _context.Set<T>().Add(entity);
     }
 
     public bool Exicts(int id)
     {
-        throw new NotImplementedException();
+     return _context.Set<T>().Any(e => e.Id == id);
     }
 
-    public Task<T?> GetByIdAsync(int id)
+    public async Task<T?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+      return await _context.Set<T>().FindAsync(id);   
     }
 
-    public Task<IReadOnlyList<T>> ListAllAsync()
+    public async Task<IReadOnlyList<T>> ListAllAsync()
     {
-        throw new NotImplementedException();
+       return await _context.Set<T>().ToListAsync();
     }
 
     public void Remove(T entity)
     {
-        throw new NotImplementedException();
+       _context.Set<T>().Remove(entity);
     }
 
-    public Task<bool> SaveAllAsync()
+    public async Task<bool> SaveAllAsync()
     {
-        throw new NotImplementedException();
+        return await _context.SaveChangesAsync() > 0;
     }
-
+  
     public void Update(T entity)
     {
-        throw new NotImplementedException();
+       _context.Set<T>().Attach(entity);
+       _context.Entry(entity).State = EntityState.Modified;
     }
 }
