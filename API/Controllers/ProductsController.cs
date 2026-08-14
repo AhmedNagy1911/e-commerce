@@ -1,7 +1,6 @@
 ﻿using Core.Entites;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
@@ -68,6 +67,19 @@ public class ProductsController(IProductRepository repo) : ControllerBase
 
         return BadRequest("can not delete the product");
     }
+
+    [HttpGet("brands")]
+    public async Task<ActionResult<IReadOnlyList<string>>> GetProductBrands()
+    {
+        return Ok(await _repo.GetBrandsAsync());
+    }
+
+    [HttpGet("types")]
+    public async Task<ActionResult<IReadOnlyList<string>>> GetProductTypes()
+    {
+        return Ok(await _repo.GetTypesAsync());
+    }
+
     private bool ProductExists(int id)
     {
         return _repo.ProductExists(id);
