@@ -12,6 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//add services for the database context and repository
 builder.Services.AddDbContext<StoreContext>(opt =>
 { 
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -19,6 +20,7 @@ builder.Services.AddDbContext<StoreContext>(opt =>
 );
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();
 
