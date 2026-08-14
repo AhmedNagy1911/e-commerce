@@ -1,9 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Core.Entites;
+using Core.Interfaces;
 
 namespace Infrastructure.Data;
 
-internal class SpecificationEvaluator
+public class SpecificationEvaluator<T> where T : BaseEntity
 {
+    public static IQueryable<T> GetQuery(IQueryable<T> query, ISpecification<T> spec)
+    {
+        if (spec.Criteria is not null)
+        {
+            query = query.Where(spec.Criteria);  // x=> x.brand == brand 
+        } 
+        return query;
+    }
 }
