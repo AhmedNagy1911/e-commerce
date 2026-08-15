@@ -72,17 +72,19 @@ public class ProductsController(IGenericRepository<Product> repo) : ControllerBa
         return BadRequest("can not delete the product");
     }
 
-    //[HttpGet("brands")]
-    //public async Task<ActionResult<IReadOnlyList<string>>> GetProductBrands()
-    //{
-    //    return Ok(await _repo.GetBrandsAsync());
-    //}
+    [HttpGet("brands")]
+    public async Task<ActionResult<IReadOnlyList<string>>> GetProductBrands()
+    {
+       var spec = new BrandListSpeification();
+       return Ok(await _repo.ListAsync(spec));
+    }
 
-    //[HttpGet("types")]
-    //public async Task<ActionResult<IReadOnlyList<string>>> GetProductTypes()
-    //{
-    //    return Ok(await _repo.GetTypesAsync());
-    //}
+    [HttpGet("types")]
+    public async Task<ActionResult<IReadOnlyList<string>>> GetProductTypes()
+    {
+         var spec = new TypeListSpeification();
+       return Ok(await _repo.ListAsync(spec));
+    }
 
     private bool ProductExists(int id)
     {
