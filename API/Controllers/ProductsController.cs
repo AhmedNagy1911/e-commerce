@@ -6,9 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class ProductsController(IGenericRepository<Product> repo) : ControllerBase
+public class ProductsController(IGenericRepository<Product> repo) : BaseApiController
 {
     private readonly IGenericRepository<Product> _repo = repo;
 
@@ -16,11 +14,8 @@ public class ProductsController(IGenericRepository<Product> repo) : ControllerBa
     public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts([FromQuery] ProductSpecParams productParams)
     {
         var spec = new ProductSpecification(productParams);
-        var products = await _repo.ListAsync(spec);
-        var count = await _repo.CountAsync(spec);
-        var pagination = new Pagination<Product>(productParams.PageIndex, productParams.PageSize, count, products);
-
-        return Ok(pagination);
+       
+        return await CreatePageResult(_repo, spec, productParams.PageIndex, productParams.PageSize);
     }
 
     [HttpGet("{id:int}")]
