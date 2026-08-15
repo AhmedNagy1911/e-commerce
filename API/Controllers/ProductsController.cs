@@ -12,9 +12,9 @@ public class ProductsController(IGenericRepository<Product> repo) : ControllerBa
     private readonly IGenericRepository<Product> _repo = repo;
 
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts(string? brand, string? type, string? sort)
+    public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts([FromQuery] ProductSpecParams productParams)
     {
-        var spec = new ProductSpecification(brand, type, sort);
+        var spec = new ProductSpecification(productParams);
         var products = await _repo.ListAsync(spec);
 
         return Ok(products);
