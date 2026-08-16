@@ -1,6 +1,7 @@
 using API.Middleware;
 using Core.Interfaces;
 using Infrastructure.Data;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
@@ -31,7 +32,7 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
     var configuation = ConfigurationOptions.Parse(connectionString, true);
     return ConnectionMultiplexer.Connect(configuation);
 });
-
+ builder.Services.AddSingleton<ICartService, CartService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
