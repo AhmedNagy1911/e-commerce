@@ -8,7 +8,8 @@ namespace Infrastructure.Data;
 public class StoreContext(DbContextOptions options) : IdentityDbContext<AppUser>(options)
 {
     public DbSet<Product> Products { get; set; }
-    public DbSet<Address> Address { get; set; }
+    public DbSet<Address> Addresses { get; set; }
+    public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
 
     override protected void OnModelCreating(ModelBuilder modelBuilder)
     {
