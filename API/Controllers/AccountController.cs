@@ -3,6 +3,7 @@ using Core.Entites;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Security.Claims;
 
@@ -36,39 +37,40 @@ public class AccountController(SignInManager<AppUser> signInManager) : BaseApiCo
         return Ok();
     }
 
-    //[Authorize]
-    //[HttpPost("logout")]
-    //public async Task<ActionResult> Logout()
-    //{
-    //    await signInManager.SignOutAsync();
-    //    return NoContent();
-    //}
+    [Authorize]
+    [HttpPost("logout")]
+    public async Task<ActionResult> Logout()
+    {
+        await signInManager.SignOutAsync();
+        return NoContent();
+    }
 
-    //[HttpGet("user-info")]
-    //public async Task<ActionResult> GetUserInfo()
-    //{
-    //    if (User.Identity?.IsAuthenticated == false) return NoContent();
+    [HttpGet("user-info")]
+    public async Task<ActionResult> GetUserInfo()
+    {
+        if (User.Identity?.IsAuthenticated == false) return NoContent();
 
-    //    var user = await signInManager.UserManager.GetUserByEmailWithAddress(User);
+        var user = await signInManager.UserManager.Users.FirstOrDefaultAsync(x => x.Email==User.FindFirstValue(ClaimValueTypes.Email));
+        if(user == null) return Unauthorized();
 
-    //    return Ok(new
-    //    {
-    //        user.FirstName,
-    //        user.LastName,
-    //        user.Email,
-    //        Address = user.Address?.ToDto(),
-    //        Roles = User.FindFirstValue(ClaimTypes.Role)
-    //    });
-    //}
+        return Ok(new
+        {
+            user.FirstName,
+            user.LastName,
+            user.Email,
+            //Address = user.Address?.ToDto(),
+            //Roles = User.FindFirstValue(ClaimTypes.Role)
+        });
+    }
 
-    //[HttpGet("auth-status")]
-    //public ActionResult GetAuthState()
-    //{
-    //    return Ok(new
-    //    {
-    //        IsAuthenticated = User.Identity?.IsAuthenticated ?? false
-    //    });
-    //}
+    [HttpGet("auth-status")]
+    public ActionResult GetAuthState()
+    {
+        return Ok(new
+        {
+            IsAuthenticated = User.Identity?.IsAuthenticated ?? false
+        });
+    }
 
     //[Authorize]
     //[HttpPost("address")]
