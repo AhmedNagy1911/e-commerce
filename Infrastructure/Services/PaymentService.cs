@@ -6,7 +6,7 @@ using Stripe;
 
 namespace Infrastructure.Services;
 
-public class PaymentService(IConfiguration config, ICartService cartService,IGenericRepository<Core.Entites.Product> productRepo,IGenericRepository<DeliveryMethod> dmRepo) : IPaymentService
+public class PaymentService(IConfiguration config, ICartService cartService, IUnitOfWork unit) : IPaymentService
 {
     //private readonly ICartService cartService;
     //private readonly IUnitOfWork unit;
@@ -30,13 +30,13 @@ public class PaymentService(IConfiguration config, ICartService cartService,IGen
 
         if(cart.DeliveryMethodId.HasValue)
         {
-            var deliveryMethod = await dmRepo.GetByIdAsync((int)cart.DeliveryMethodId);
+            var deliveryMethod = await unit.Repository<DeliveryMethod>().GetByIdAsync((int)cart.DeliveryMethodId);
             if (deliveryMethod == null) return null;
             shippingPrice = deliveryMethod.Price;
         }
         foreach (var item in cart.Items)
         {
-            var productItem = await productRepo.GetByIdAsync(item.ProductId);
+            var productItem = await unit.Repository<Core.Entites.Product>().GetByIdAsync(item.ProductId);
             if (productItem == null) return null;
             if (item.Price != productItem.Price)
             {
