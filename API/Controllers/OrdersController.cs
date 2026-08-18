@@ -74,19 +74,19 @@ public class OrdersController(ICartService cartService, IUnitOfWork unit) : Base
     }
 
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<Order>>> GetOrdersForUser()  //OrderDto
+    public async Task<ActionResult<IReadOnlyList<OrderDto>>> GetOrdersForUser()  
     {
         var spec = new OrderSpecification(User.GetEmail());
 
         var orders = await unit.Repository<Order>().ListAsync(spec);
          
-       // var ordersToReturn = orders.Select(o => o.ToDto()).ToList();
+        var ordersToReturn = orders.Select(o => o.ToDto()).ToList();
 
-        return Ok(orders);
+        return Ok(ordersToReturn);
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<Order>> GetOrderById(int id)
+    public async Task<ActionResult<OrderDto>> GetOrderById(int id)
     {
         var spec = new OrderSpecification(User.GetEmail(), id);
 
@@ -94,7 +94,7 @@ public class OrdersController(ICartService cartService, IUnitOfWork unit) : Base
 
         if (order == null) return NotFound();
 
-        // return order.ToDto();
-        return order;
+        return order.ToDto();
+        
     }
 }
