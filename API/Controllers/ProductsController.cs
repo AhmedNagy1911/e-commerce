@@ -1,6 +1,7 @@
 ﻿using Core.Entites;
 using Core.Interfaces;
 using Core.Specifications;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -25,7 +26,8 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
 
         return product;
     }
-
+     
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<Product>> CreateProduct(Product product)
     {
@@ -37,6 +39,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
         return BadRequest("can not create the product");
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateProduct(int id, Product product)
     {
@@ -51,6 +54,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
         return BadRequest("can not update the product");
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteProduct(int id)
     {

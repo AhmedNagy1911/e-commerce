@@ -4,6 +4,7 @@ using Core.Entites;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace API.Controllers;
 
@@ -55,8 +56,8 @@ public class AccountController(SignInManager<AppUser> signInManager) : BaseApiCo
             user.FirstName,
             user.LastName,
             user.Email,
-            Address = user.Address?.ToDto()
-            //Roles = User.FindFirstValue(ClaimTypes.Role)
+            Address = user.Address?.ToDto(),
+            Roles = User.FindFirstValue(ClaimTypes.Role)
         });
     }
 
