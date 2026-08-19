@@ -1,6 +1,8 @@
-﻿namespace Core.Entites.OrderAggregate;
+﻿using Core.Interfaces;
 
-public class Order : BaseEntity   //, IDtoConvertible
+namespace Core.Entites.OrderAggregate;
+
+public class Order : BaseEntity ,IDtoConvertible
 {
     public DateTime OrderDate { get; set; }
     public required string BuyerEmail { get; set; }
