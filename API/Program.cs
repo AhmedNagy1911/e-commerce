@@ -37,7 +37,9 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
     var configuation = ConfigurationOptions.Parse(connectionString, true);
     return ConnectionMultiplexer.Connect(configuation);
 });
- builder.Services.AddSingleton<ICartService, CartService>();
+
+builder.Services.AddSingleton<ICartService, CartService>();
+builder.Services.AddSingleton<IResponseCacheService, ResponseCacheService>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<AppUser>()
