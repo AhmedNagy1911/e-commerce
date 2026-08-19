@@ -33,29 +33,29 @@ public class AdminController(IUnitOfWork unit, IPaymentService paymentService) :
         return order.ToDto();
     }
 
-    //[HttpPost("orders/refund/{id:int}")]
-    //public async Task<ActionResult<OrderDto>> RefundOrder(int id)
-    //{
-    //    var spec = new OrderSpecification(id);
+    [HttpPost("orders/refund/{id:int}")]
+    public async Task<ActionResult<OrderDto>> RefundOrder(int id)
+    {
+        var spec = new OrderSpecification(id);
 
-    //    var order = await unit.Repository<Order>().GetEntityWithSpec(spec);
+        var order = await unit.Repository<Order>().GetEntityWithSpec(spec);
 
-    //    if (order == null) return BadRequest("No order with that Id");
+        if (order == null) return BadRequest("No order with that Id");
 
-    //    if (order.Status == OrderStatus.Pending)
-    //        return BadRequest("Payment not received for this order");
+        if (order.Status == OrderStatus.Pending)
+            return BadRequest("Payment not received for this order");
 
-    //    var result = await paymentService.RefundPayment(order.PaymentIntentId);
+        var result = await paymentService.RefundPayment(order.PaymentIntentId);
 
-    //    if (result == "succeeded")
-    //    {
-    //        order.Status = OrderStatus.Refunded;
+        if (result == "succeeded")
+        {
+            order.Status = OrderStatus.Refunded;
 
-    //        await unit.Complete();
+            await unit.Complete();
 
-    //        return order.ToDto();
-    //    }
+            return order.ToDto();
+        }
 
-    //    return BadRequest("Problem refunding order");
-    //}
+        return BadRequest("Problem refunding order");
+    }
 }
