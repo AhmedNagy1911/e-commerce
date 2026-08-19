@@ -28,7 +28,8 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
 
         return product;
     }
-     
+
+    [InvalidateCache("api/products|")]
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<Product>> CreateProduct(Product product)
@@ -41,6 +42,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
         return BadRequest("can not create the product");
     }
 
+    [InvalidateCache("api/products|")]
     [Authorize(Roles = "Admin")]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateProduct(int id, Product product)
@@ -56,6 +58,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
         return BadRequest("can not update the product");
     }
 
+    [InvalidateCache("api/products|")]
     [Authorize(Roles = "Admin")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteProduct(int id)
