@@ -20,6 +20,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(x => x.OrderDate).HasConversion(
             x => x.ToUniversalTime(),
             x => DateTime.SpecifyKind(x, DateTimeKind.Utc)
-        );
+        ).HasDefaultValueSql("GETUTCDATE()");
     }
 }

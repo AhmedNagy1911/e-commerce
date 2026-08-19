@@ -2,7 +2,7 @@
 
 public class Order : BaseEntity   //, IDtoConvertible
 {
-    public DateTime OrderDate { get; set; } = DateTime.UtcNow;
+    public DateTime OrderDate { get; set; }
     public required string BuyerEmail { get; set; }
     public ShippingAddress ShippingAddress { get; set; } = null!;
     public DeliveryMethod DeliveryMethod { get; set; } = null!;
