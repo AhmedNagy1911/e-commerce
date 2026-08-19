@@ -19,9 +19,9 @@ public static class OrderMappingExtensions
             OrderItems = order.OrderItems.Select(x => x.ToDto()).ToList(),
             Subtotal = order.Subtotal,
             Discount = order.Discount,
+            Total = order.GetTotal(),
             Status = order.Status.ToString(),
-            PaymentIntentId = order.PaymentIntentId,
-            Total = order.GetTotal()
+            PaymentIntentId = order.PaymentIntentId
         };
     }
 
