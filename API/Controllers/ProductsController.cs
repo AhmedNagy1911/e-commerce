@@ -1,4 +1,5 @@
-﻿using Core.Entites;
+﻿using API.RequstHelpers;
+using Core.Entites;
 using Core.Interfaces;
 using Core.Specifications;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +9,7 @@ namespace API.Controllers;
 
 public class ProductsController(IUnitOfWork unit) : BaseApiController
 {
-
+    [Cached(100000)]
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts([FromQuery] ProductSpecParams productParams)
     {
@@ -17,6 +18,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
         return await CreatePageResult(unit.Repository<Product>(), spec, productParams.PageIndex, productParams.PageSize);
     }
 
+    [Cached(100000)]
     [HttpGet("{id:int}")]
     public async Task<ActionResult<Product>> GetProduct(int id)
     {
@@ -72,6 +74,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
         return BadRequest("can not delete the product");
     }
 
+    [Cached(100000)]
     [HttpGet("brands")]
     public async Task<ActionResult<IReadOnlyList<string>>> GetProductBrands()
     {
@@ -79,6 +82,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
        return Ok(await unit.Repository<Product>().ListAsync(spec));
     }
 
+    [Cached(100000)]
     [HttpGet("types")]
     public async Task<ActionResult<IReadOnlyList<string>>> GetProductTypes()
     {
